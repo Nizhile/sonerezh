@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+This is the second major release of Sonerezh. Most part of the core of Sonerezh
+has been rewritten during the last months. The database schema has been changed
+too, to improve global performances and allow more cool stuff for the future.
+
 ### Changed
 
-* Make search case-insensitive
+* Make search case-insensitive.
+* New synchronization system to easily import to, update or clean the database.
+* New command-line interface.
+* Fix #353: skip directories prefixed with a dot during scan.
+* Implement #289: add the --force option to the CLI.
 
 ## [1.2.4] - 2018-09-16
 
