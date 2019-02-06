@@ -354,6 +354,9 @@ function init() {
         var replace = "_65x65"+(retina ? "@2x" : "")+"$1";
         $coverImg.attr('src', track.cover.replace(/(\.[a-z0-9]+)/i, replace));
         updateUI();
+        $.ajax({
+            url: "/songs/played/" + track.id
+        });
     });
 
     player.addEventListener('durationchange', function() {
