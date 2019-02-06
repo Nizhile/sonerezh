@@ -126,7 +126,7 @@ class SongManager {
                 $cover_extension = 'jpg';
             }
 
-            $cover_name = md5($metadata['artist'].$metadata['album']) . '.' . $cover_extension;
+            $cover_name = md5($file_infos['comments']['picture'][$array_length -1]['data']) . '.' . $cover_extension;
             $cover_path = new File(IMAGES.THUMBNAILS_DIR.DS.$cover_name);
 
             // IF the cover already exists
@@ -153,7 +153,7 @@ class SongManager {
                 $cover_source = new File($cover_source_path);
                 $cover_info = $cover_source->info();
                 $cover_extension = $cover_info['extension'];
-                $cover_name = md5($metadata['artist'].$metadata['album']) . '.' . $cover_extension;
+                $cover_name = md5_file($cover_source_path) . '.' . $cover_extension;
 
                 // IF the cover already exists
                 // OR the cover doesn't exist AND has been successfully copied
