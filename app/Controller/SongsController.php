@@ -488,31 +488,22 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
-        // Get 5 band names
-        $this->Paginator->settings = array(
-            'Song' => array(
-                'limit'     => 5,
-                'fields'    => array('Song.band'),
-                'group'     => array('Song.band'),
-                'order'     => array('Song.band' => 'ASC')
-            )
-        );
-
-        $bands = $this->Paginator->paginate();
-
-        $band_list = array();
-        foreach ($bands as $band) {
-            $band_list[] = $band['Song']['band'];
-        }
-
-        // Get songs from the previous band names
+        $this->loadModel('Played');
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
-            'conditions'    => array('Song.band' => $band_list)
-        ));
+            'joins' => array(
+                        array(
+                          'table' => 'playeds',
+                          'alias' => 'lastplayed',
+                          'type' => 'INNER',
+                          'conditions' => array('lastplayed.song_id = Song.id')
+                        )
+            ),
 
-        $this->SortComponent = $this->Components->load('Sort');
-        $songs = $this->SortComponent->sortByBand($songs);
+            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'conditions'    => array('lastplayed.user_id' => $this->Auth->user('id')),
+            'order'         => 'lastplayed.created DESC',
+            'limit'         => 5
+        ));
 
         if (empty($songs)) {
             $this->Flash->info(__('Oops! The database is empty...'));
