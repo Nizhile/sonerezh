@@ -355,7 +355,7 @@ function init() {
         $coverImg.attr('src', track.cover.replace(/(\.[a-z0-9]+)/i, replace));
         updateUI();
         $.ajax({
-            url: "/songs/played/" + track.id
+            url: baseurl + "/songs/played/" + track.id
         });
     });
 
