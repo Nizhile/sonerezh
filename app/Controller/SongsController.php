@@ -683,6 +683,43 @@ class SongsController extends AppController {
         return $this->response;
     }
 
+    /**
+     * This function add the current song id as played by current user.
+     *
+     * @param $id song_id
+     */
+    public function played($id) {
+        $song = $this->Song->findById($id);
+        $user_id = $this->Auth->user('id');
+
+        if (!$song) {
+            throw new NotFoundException();
+        }
+        if (!$user_id) {
+            // this should probably be not authorized exception
+            throw new NotFoundException();
+        }
+        $this->log("Song $id played by user $user_id", 'debug');
+
+        $this->loadModel('Played');
+        $this->Played->create();
+
+        $message = "<error>[ERR]</error>Unable to write played stat to the database";
+        try {
+            $this->Played->save(array(
+                                 'user_id' => $user_id,
+                                 'song_id' => $id
+            ));
+            $this->response->statusCode(200);
+        }
+        catch(\Exception $e) {
+            $this->log($message);
+            $this->response->statusCode(500);
+        }
+
+        return $this->response;
+    }
+	
     public function ajax_view($id) {
         $this->viewClass = 'Json';
         $song = $this->Song->find('first', array('conditions' => array('Song.id' => $id)));
