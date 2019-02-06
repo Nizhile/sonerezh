@@ -12,6 +12,9 @@ class User extends AppModel {
     public $hasMany = array(
         'Playlist' => array(
             'dependent' => true
+        ),
+        'Played' => array(
+            'dependent' => true
         )
     );
     public $validate = array(
