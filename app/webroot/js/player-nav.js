@@ -117,7 +117,7 @@ function init() {
     $('#content').on('click', playTitle, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        var view = $('[data-view]').attr('data-view');
+        var view = $(this).parents('[data-view]').attr('data-view');
 
         if (view == 'default') {
             var songs = songsManager.getAllSongs();

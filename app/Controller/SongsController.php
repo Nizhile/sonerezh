@@ -488,6 +488,25 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
+        $latests = array();
+        // Is this the first page requested?
+        $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
+        $db = $this->Song->getDataSource();
+
+        //$this->Song->virtualFields['cover'] = 'MIN(Song.cover)';
+
+        if ($page == 1) {
+            $latests = $this->Song->find('all', array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => 'MAX(Song.created) DESC',
+                'limit' => 6
+            ));
+        }
+        foreach ($latests as &$latest) {
+            $latest['Song']['cover'] = empty($latest['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$latest['Song']['cover'];
+        }
+
         // Get 5 band names
         $this->Paginator->settings = array(
             'Song' => array(
@@ -518,7 +537,7 @@ class SongsController extends AppController {
             $this->Flash->info(__('Oops! The database is empty...'));
         }
 
-        $this->set(compact('songs', 'playlists'));
+        $this->set(compact('songs', 'playlists', 'latests'));
     }
 
     /**
