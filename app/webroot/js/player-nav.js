@@ -120,7 +120,7 @@ function init() {
         var view = $('[data-view]').attr('data-view');
 
         if (view == 'default') {
-            var songs = songsManager.getAllSongs();
+            var songs = [songsManager.getSong(songId)];
         } else if (view == 'artists' || view == 'search') {
             var band = $(this).parents('[data-band]').attr('data-band');
             var songs = songsManager.getBandSongs(band);
@@ -150,7 +150,7 @@ function init() {
         var view = $('[data-view]').attr('data-view');
 
         if (view == 'default') {
-            var songs = songsManager.getAllSongs();
+            var songs = [songsManager.getSong(songId)];
         } else if (view == 'artists' || view == 'search') {
             var band = $(this).parents('[data-band]').attr('data-band');
             var songs = songsManager.getBandSongs(band);
