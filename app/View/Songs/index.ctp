@@ -1,3 +1,4 @@
+<h3><?php echo __('Recently played'); ?></h3>
 <?php if (!empty($songs)): ?>
     <div class="col-lg-12" data-view="default">
         <table class="table table-hover" data-scroll-container="true">
