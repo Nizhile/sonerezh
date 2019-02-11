@@ -165,6 +165,10 @@ $this->end(); ?>
                     <?php echo __('Songs'); ?>
                 </li>
                 <li class="list-group-item">
+                    <span class="badge"><?php echo $stats['played']; ?></span>
+                    <?php echo __('Songs played'); ?>
+                </li>
+                <li class="list-group-item">
                     <span class="badge"><?php echo $this->FileSize->humanize($stats['thumbCache']); ?></span>
                     <?php echo __('Thumbnails cache'); ?>
                 </li>

@@ -65,6 +65,9 @@ class SettingsController extends AppController {
 
         $stats['songs'] = $this->Song->find('count');
 
+        $this->loadModel('Played');
+        $stats['played'] = $this->Played->find('count');
+
         // Thumbnails cache size
         $stats['thumbCache'] = 0;
 
