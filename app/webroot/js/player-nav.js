@@ -31,6 +31,7 @@ var playAlbum = '.action-play-album';
 var playTitleNext = '.action-play-next';
 var playBandNext = '.action-artist-play-next';
 var playAlbumNext = '.action-album-play-next';
+var downloadAlbum = '.action-download-album';
 var playPlaylistNext = '.action-playlist-play-next';
 var playTitleAfter = '.action-add-to-up-next';
 var playBandAfter = '.action-add-artist-to-up-next';
@@ -235,6 +236,45 @@ function init() {
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
         player.addAll(songsManager.getAlbumSongs(band, album));
+    });
+
+    $('#content').on('click', downloadAlbum, function(e) {
+        e.preventDefault();
+        var band = $(this).parents('[data-band]').attr('data-band');
+        var album = $(this).parents('[data-album]').attr('data-album');
+        var songs = songsManager.getAlbumSongs(band, album);
+
+        var temporaryDownloadLink = document.createElement("a");
+        temporaryDownloadLink.style.display = 'none';
+        temporaryDownloadLink.setAttribute('class','no-ajax');
+
+        document.body.appendChild( temporaryDownloadLink );
+        console.log("Download album " + songs.length);
+        var dlLinks = new Array(songs.length)
+
+        for( var i = 0; i < songs.length; i++ )
+        {
+            var downloadPath = baseurl + songs[i].url;
+            temporaryDownloadLink.setAttribute( 'href', downloadPath );
+            //temporaryDownloadLink.setAttribute( 'download', download.name );
+            console.log("Downloading " + songs[i].title + " at " +
+                downloadPath);
+
+           dlLinks[i] = document.createElement("a");
+           dlLinks[i].style.display = 'none';
+           dlLinks[i].setAttribute('class','no-ajax');
+           dlLinks[i].setAttribute( 'href', downloadPath );
+           document.body.appendChild(dlLinks[i]);
+           dlLinks[i].click();
+
+           //temporaryDownloadLink.click();
+           //console.log(songs[i]);
+        }
+        for( var i = 0; i < songs.length; i++ ) {
+            document.body.removeChild(dlLinks[i] );
+        }
+
+        document.body.removeChild( temporaryDownloadLink );
     });
 
     $('#content').on('click', shuffleAlbum, function(e) {
